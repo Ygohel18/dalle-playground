@@ -3,7 +3,7 @@ import torch
 
 class StableDiffusionWrapper:
     def __init__(self) -> None:
-        repo_id = "stabilityai/stable-diffusion-2-base"
+        repo_id = "stabilityai/stable-diffusion-2"
         pipe = DiffusionPipeline.from_pretrained(
             repo_id, revision="fp16",
             torch_dtype=torch.float16
