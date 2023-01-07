@@ -15,7 +15,7 @@ class StableDiffusionWrapper:
         #     torch_dtype=torch.float16
         # )
 
-        if (self.model_id != "stabilityai/stable-diffusion-x4-upscaler"):
+        if (self.repo_id != "stabilityai/stable-diffusion-x4-upscaler"):
             pipe = DiffusionPipeline.from_pretrained(
                 self.repo_id,
                 torch_dtype=torch.float16
