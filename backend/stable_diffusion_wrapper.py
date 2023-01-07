@@ -1,5 +1,6 @@
-from diffusers import DiffusionPipeline, DPMSolverMultistepScheduler, StableDiffusionUpscalePipelin
+from diffusers import DiffusionPipeline, DPMSolverMultistepScheduler
 import requests
+import torch
 from PIL import Image
 from io import BytesIO
 
@@ -26,8 +27,8 @@ class StableDiffusionWrapper:
 
     
     def enhance_image(self, text_prompt: str, img: str, steps: int = 5):
-        self.model_id = "stabilityai/stable-diffusion-x4-upscaler"
-        pipe = StableDiffusionUpscalePipeline.from_pretrained(self.model_id, torch_dtype=torch.float16)
+        self.repo_id = "stabilityai/stable-diffusion-x4-upscaler"
+        pipe = DiffusionPipeline.from_pretrained(self.repo_id, torch_dtype=torch.float16)
         pipe.scheduler = DPMSolverMultistepScheduler.from_config(
             pipe.scheduler.config)
         self.pipe = pipe.to("cuda")
@@ -36,7 +37,7 @@ class StableDiffusionWrapper:
         low_res_img = Image.open(BytesIO(response.content)).convert("RGB")
         low_res_img = low_res_img.resize((128, 128))
 
-        upscaled_image = self.pipe(prompt=prompt, image=low_res_img, num_inference_steps=steps).images[0]
+        upscaled_image = self.pipe(prompt=text_prompt, image=low_res_img, num_inference_steps=steps).images[0]
         return upscaled_image
 
 

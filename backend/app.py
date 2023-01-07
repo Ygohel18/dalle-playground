@@ -16,9 +16,6 @@ CORS(app)
 print("--> Starting the image generation server. This might take up to two minutes.")
 
 stable_diff_model = None
-stable_diff_model = StableDiffusionWrapper("stabilityai/stable-diffusion-2-1")
-stable_diff_model = StableDiffusionWrapper("stabilityai/stable-diffusion-x4-upscaler")
-stable_diff_model = None
 
 parser = argparse.ArgumentParser(description = "A text-to-image app to turn your textual prompts into visionary delights")
 parser.add_argument("--port", type=int, default=8000, help = "backend port")
@@ -110,8 +107,6 @@ def enhance_images_api():
         img.save(buffered, format=args.img_format)
         img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
         returned_generated_images.append(img_str)
-
-    print(f"Created {num_images} images from text prompt [{text_prompt}]")
     
     response = {'generatedImgs': returned_generated_images,
     'generatedImgsFormat': args.img_format}
